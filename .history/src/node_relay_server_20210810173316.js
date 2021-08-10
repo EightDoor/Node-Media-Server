@@ -126,10 +126,8 @@ class NodeRelayServer {
       let isPull = conf.mode === 'pull';
       if (isPull && app === conf.app && !context.publishers.has(streamPath)) {
         let hasApp = conf.edge.match(/rtmp:\/\/([^\/]+)\/([^\/]+)/);
-        // 添加rtsp判断条件
-        let hasRtsp = conf.edge.match(/rtsp:\/\/([^\/]+)\/([^\/]+)/);
         conf.ffmpeg = this.config.relay.ffmpeg;
-        conf.inPath = hasApp ? `${conf.edge}/${stream}` : hasRtsp ? conf.edge : `${conf.edge}${streamPath}`;
+        conf.inPath = hasApp ? `${conf.edge}/${stream}` : `${conf.edge}${streamPath}`;
         conf.ouPath = `rtmp://127.0.0.1:${this.config.rtmp.port}${streamPath}`;
         if(Object.keys(args).length > 0) {
           conf.inPath += '?';

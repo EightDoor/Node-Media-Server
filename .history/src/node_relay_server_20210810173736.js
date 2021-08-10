@@ -126,7 +126,6 @@ class NodeRelayServer {
       let isPull = conf.mode === 'pull';
       if (isPull && app === conf.app && !context.publishers.has(streamPath)) {
         let hasApp = conf.edge.match(/rtmp:\/\/([^\/]+)\/([^\/]+)/);
-        // 添加rtsp判断条件
         let hasRtsp = conf.edge.match(/rtsp:\/\/([^\/]+)\/([^\/]+)/);
         conf.ffmpeg = this.config.relay.ffmpeg;
         conf.inPath = hasApp ? `${conf.edge}/${stream}` : hasRtsp ? conf.edge : `${conf.edge}${streamPath}`;
