@@ -2,6 +2,7 @@
 
 一个 Node.js 实现的RTMP/HTTP/WebSocket/HLS/DASH流媒体服务器
 ## 基于原版的改动
+- 动态拉流地址必须为/live/xxx 
 - 支持rtsp reply 动态拉流
 - 支持rtsp/rtmp 中继  传递视频转码参数videoCode
 # 特性

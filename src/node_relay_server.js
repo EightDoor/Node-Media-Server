@@ -146,7 +146,7 @@ class NodeRelayServer {
     //     Logger.log('[relay dynamic pull] start id=' + id, conf.inPath, 'to', conf.ouPath);
     //   }
     // }
-    const index = this.config.relay.tasks.findIndex((item)=>item.edge === streamPath);
+    const index = this.config.relay.tasks.findIndex((item)=>item.name === streamPath.substring(streamPath.indexOf("/live/") + 6));
     if(index !== -1) {
       let conf = this.config.relay.tasks[index];
       Logger.log('[选取的值]' + conf);
