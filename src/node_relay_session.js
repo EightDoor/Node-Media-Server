@@ -35,14 +35,14 @@ class NodeRelaySession extends EventEmitter {
 
       }
     }
-
-    argv.push("-allowed_media_types")
-    argv.push("video")
-
     if (this.conf.no_audio) {
       argv.push('-an')
     }
-
+    if (this.conf.argv) {
+      this.conf.argv.forEach((item) => {
+        argv.push(item)
+      })
+    }
     Logger.log('[relay task] id=' + this.id, 'cmd=ffmpeg', argv.join(' '));
 
     this.ffmpeg_exec = spawn(this.conf.ffmpeg, argv);
