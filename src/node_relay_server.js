@@ -149,7 +149,7 @@ class NodeRelayServer {
     const index = this.config.relay.tasks.findIndex((item)=>item.name === streamPath.substring(streamPath.indexOf("/live/") + 6));
     if(index !== -1) {
       let conf = this.config.relay.tasks[index];
-      Logger.log('[选取的值]' + conf);
+      Logger.log('[选取的值]' + JSON.stringify(conf));
       let isPull = conf.mode === 'pull';
       if (isPull && app === conf.app && !context.publishers.has(streamPath)) {
         let hasApp = conf.edge.match(/rtmp:\/\/([^\/]+)\/([^\/]+)/);
