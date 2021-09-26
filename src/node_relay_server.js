@@ -121,9 +121,35 @@ class NodeRelayServer {
     }
     let regRes = /\/(.*)\/(.*)/gi.exec(streamPath);
     let [app, stream] = _.slice(regRes, 1);
-    let i = this.config.relay.tasks.length;
-    while (i--) {
-      let conf = this.config.relay.tasks[i];
+    // let i = this.config.relay.tasks.length;
+    // while (i--) {
+    //   let conf = this.config.relay.tasks[i];
+    //   let isPull = conf.mode === 'pull';
+    //   if (isPull && app === conf.app && !context.publishers.has(streamPath)) {
+    //     let hasApp = conf.edge.match(/rtmp:\/\/([^\/]+)\/([^\/]+)/);
+    //     // 添加rtsp判断条件
+    //     let hasRtsp = conf.edge.match(/rtsp:\/\/([^\/]+)\/([^\/]+)/);
+    //     conf.ffmpeg = this.config.relay.ffmpeg;
+    //     conf.inPath = hasApp ? `${conf.edge}/${stream}` : hasRtsp ? conf.edge : `${conf.edge}${streamPath}`;
+    //     conf.ouPath = `rtmp://127.0.0.1:${this.config.rtmp.port}${streamPath}`;
+    //     if(Object.keys(args).length > 0) {
+    //       conf.inPath += '?';
+    //       conf.inPath += querystring.encode(args);
+    //     }
+    //     let session = new NodeRelaySession(conf);
+    //     session.id = id;
+    //     session.on('end', (id) => {
+    //       this.dynamicSessions.delete(id);
+    //     });
+    //     this.dynamicSessions.set(id, session);
+    //     session.run();
+    //     Logger.log('[relay dynamic pull] start id=' + id, conf.inPath, 'to', conf.ouPath);
+    //   }
+    // }
+    const index = this.config.relay.tasks.findIndex((item)=>item.edge === streamPath);
+    if(index !== -1) {
+      let conf = this.config.relay.tasks[index];
+      Logger.log('[选取的值]' + conf);
       let isPull = conf.mode === 'pull';
       if (isPull && app === conf.app && !context.publishers.has(streamPath)) {
         let hasApp = conf.edge.match(/rtmp:\/\/([^\/]+)\/([^\/]+)/);
