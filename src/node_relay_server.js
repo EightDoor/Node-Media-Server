@@ -115,7 +115,7 @@ class NodeRelayServer {
   }
 
   onPrePlay(id, streamPath, args) {
-    Logger.log('[准备播放]-onPrePlay' + id + streamPath + args);
+    Logger.log('[准备播放]-onPrePlay' + id,  streamPath, args);
     if (!this.config.relay.tasks) {
       return;
     }
