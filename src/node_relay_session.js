@@ -19,10 +19,10 @@ class NodeRelaySession extends EventEmitter {
     this.TAG = 'relay';
   }
 
-  run() {
+  run () {
     let format = this.conf.ouPath.startsWith('rtsp://') ? 'rtsp' : 'flv';
     console.log(this.conf.inPath, '传入路径')
-    let argv = ['-re', '-i', this.conf.inPath, '-c', this.conf.videoCode ? this.conf.videoCode: 'copy', '-f', format, this.conf.ouPath];
+    let argv = ['-re', '-i', this.conf.inPath, '-c', this.conf.videoCode ? this.conf.videoCode : 'copy', '-f', format, this.conf.ouPath];
     if (this.conf.inPath[0] === '/' || this.conf.inPath[1] === ':') {
       argv.unshift('-1');
       argv.unshift('-stream_loop');
@@ -32,14 +32,18 @@ class NodeRelaySession extends EventEmitter {
       if (RTSP_TRANSPORT.indexOf(this.conf.rtsp_transport) > -1) {
         argv.unshift(this.conf.rtsp_transport);
         argv.unshift('-rtsp_transport');
+
       }
     }
 
-    if(this.conf.no_audio) {
+    argv.push("-allowed_media_types")
+    argv.push("video")
+
+    if (this.conf.no_audio) {
       argv.push('-an')
     }
 
-    Logger.log('[relay task] id='+this.id,'cmd=ffmpeg', argv.join(' '));
+    Logger.log('[relay task] id=' + this.id, 'cmd=ffmpeg', argv.join(' '));
 
     this.ffmpeg_exec = spawn(this.conf.ffmpeg, argv);
     this.ffmpeg_exec.on('error', (e) => {
@@ -55,12 +59,12 @@ class NodeRelaySession extends EventEmitter {
     });
 
     this.ffmpeg_exec.on('close', (code) => {
-      Logger.log('[relay end] id='+this.id,'code='+code);
+      Logger.log('[relay end] id=' + this.id, 'code=' + code);
       this.emit('end', this.id);
     });
   }
 
-  end() {
+  end () {
     this.ffmpeg_exec.kill();
   }
 }
