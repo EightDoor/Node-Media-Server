@@ -22,21 +22,21 @@ class NodeRelaySession extends EventEmitter {
   run () {
     let format = this.conf.ouPath.startsWith('rtsp://') ? 'rtsp' : 'flv';
     console.log(this.conf.inPath, '传入路径')
-    let argv = ['-re', '-i', this.conf.inPath, '-c', this.conf.videoCode ? this.conf.videoCode : 'copy', '-f', format, this.conf.ouPath];
+    // TODO 去除参数 '-re',
+    let argv = ['-i', this.conf.inPath, '-vcodec', this.conf.videoCode ? this.conf.videoCode : 'copy', '-f', format, this.conf.ouPath];
     if (this.conf.inPath[0] === '/' || this.conf.inPath[1] === ':') {
       argv.unshift('-1');
       argv.unshift('-stream_loop');
     }
-
+    if (this.conf.no_audio) {
+      argv.push('-an')
+    }
     if (this.conf.inPath.startsWith('rtsp://') && this.conf.rtsp_transport) {
       if (RTSP_TRANSPORT.indexOf(this.conf.rtsp_transport) > -1) {
         argv.unshift(this.conf.rtsp_transport);
         argv.unshift('-rtsp_transport');
 
       }
-    }
-    if (this.conf.no_audio) {
-      argv.push('-an')
     }
     if (this.conf.argv) {
       this.conf.argv.forEach((item) => {
