@@ -28,9 +28,6 @@ class NodeRelaySession extends EventEmitter {
       argv.unshift('-1');
       argv.unshift('-stream_loop');
     }
-    if (this.conf.no_audio) {
-      argv.push('-an')
-    }
     if (this.conf.inPath.startsWith('rtsp://') && this.conf.rtsp_transport) {
       if (RTSP_TRANSPORT.indexOf(this.conf.rtsp_transport) > -1) {
         argv.unshift(this.conf.rtsp_transport);
@@ -38,9 +35,12 @@ class NodeRelaySession extends EventEmitter {
 
       }
     }
+    if (this.conf.no_audio) {
+      argv.unshift('-an')
+    }
     if (this.conf.argv) {
       this.conf.argv.forEach((item) => {
-        argv.push(item)
+        argv.unshift(item)
       })
     }
     Logger.log('[relay task] id=' + this.id, 'cmd=ffmpeg', argv.join(' '));
