@@ -24,6 +24,11 @@ class NodeRelaySession extends EventEmitter {
     console.log(this.conf.inPath, '传入路径')
     // TODO 去除参数 '-re',
     let argv = ['-i', this.conf.inPath, '-vcodec', this.conf.videoCode ? this.conf.videoCode : 'copy', '-f', format, this.conf.ouPath];
+    if (this.conf.argv) {
+      this.conf.argv.forEach((item) => {
+        argv.push(item)
+      })
+    }
     if (this.conf.inPath[0] === '/' || this.conf.inPath[1] === ':') {
       argv.unshift('-1');
       argv.unshift('-stream_loop');
@@ -38,11 +43,7 @@ class NodeRelaySession extends EventEmitter {
     if (this.conf.no_audio) {
       argv.unshift('-an')
     }
-    if (this.conf.argv) {
-      this.conf.argv.forEach((item) => {
-        argv.unshift(item)
-      })
-    }
+
     Logger.log('[relay task] id=' + this.id, 'cmd=ffmpeg', argv.join(' '));
 
     this.ffmpeg_exec = spawn(this.conf.ffmpeg, argv);
